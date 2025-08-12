@@ -1,12 +1,11 @@
-import { MainLayout } from "@/components/layout/main-layout"
-import { LessonList } from "@/components/features"
-import { notFound } from "next/navigation"
 import type { Metadata } from "next"
+import { ChapterPageClient } from "./chapter-page-client"
+import { MainLayout } from "@/components/layout/main-layout"
 
 interface ChapterPageProps {
-  params: {
+  params: Promise<{
     chapter: string
-  }
+  }>
 }
 
 /**
@@ -25,26 +24,19 @@ export async function generateMetadata({ params }: ChapterPageProps): Promise<Me
   
   return {
     title: `Chapter ${chapterNum} - ExcelMaster`,
-    description: `Pelajari Excel Chapter ${chapterNum} dengan berbagai lesson interaktif dan hands-on practice.`,
+    description: `Pelajari ${chapterNum === 1 ? 'Fungsi Matematika Dasar' : chapterNum === 2 ? 'Fungsi Logika' : 'Fungsi Teks'} - ExcelMaster`
   }
 }
 
 /**
- * Halaman chapter yang menampilkan daftar lesson dalam chapter tersebut
- * Pengguna dapat melihat progress lesson dan memilih lesson untuk dipelajari
+ * Server component untuk halaman chapter
  */
 export default async function ChapterPage({ params }: ChapterPageProps) {
   const resolvedParams = await params
-  const chapterNum = parseInt(resolvedParams.chapter)
   
-  // Validasi parameter chapter
-  if (isNaN(chapterNum) || chapterNum < 1 || chapterNum > 10) {
-    notFound()
-  }
+  return ( <MainLayout>
+    <ChapterPageClient chapter={resolvedParams.chapter} />
 
-  return (
-    <MainLayout>
-      <LessonList chapterId={chapterNum} />
-    </MainLayout>
+  </MainLayout>
   )
 }

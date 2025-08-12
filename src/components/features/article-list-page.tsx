@@ -147,7 +147,7 @@ export function ArticleListPage() {
   const regularArticles = filteredArticles.filter(article => !article.featured)
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 ">
       {/* Header */}
       <div className="space-y-4">
         <motion.div

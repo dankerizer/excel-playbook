@@ -62,7 +62,7 @@ export function MainLayout({
         {/* Main Content */}
         <main 
           className={cn(
-            "flex-1 overflow-auto",
+            "flex-1 overflow-auto ",
             showSidebar && !isMobile && sidebarOpen && "ml-0",
             padded && "p-6",
             className
