@@ -1,11 +1,10 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { Theme, UIState } from '@/types'
+import type { UIState } from '@/types'
 import { STORAGE_KEYS, DEFAULT_PREFERENCES } from '@/lib/constants'
 
 interface UIStoreState {
-  // Theme and preferences
-  theme: Theme
+  // UI state
   sidebarOpen: boolean
   currentView: 'dashboard' | 'learn' | 'playground' | 'leaderboard' | 'profile'
   
@@ -25,10 +24,6 @@ interface UIStoreState {
 }
 
 interface UIStoreActions {
-  // Theme actions
-  setTheme: (theme: Theme) => void
-  toggleTheme: () => void
-  
   // Sidebar actions
   setSidebarOpen: (open: boolean) => void
   toggleSidebar: () => void
@@ -58,7 +53,6 @@ interface UIStoreActions {
 type UIStore = UIStoreState & UIStoreActions
 
 const initialState: UIStoreState = {
-  theme: DEFAULT_PREFERENCES.theme,
   sidebarOpen: true,
   currentView: 'dashboard',
   loading: false,
@@ -80,27 +74,7 @@ export const useUIStore = create<UIStore>()(
     (set, get) => ({
       ...initialState,
       
-      /**
-       * Set the application theme
-       * @param theme - Theme to set ('light' | 'dark')
-       */
-      setTheme: (theme: Theme) => {
-        set({ theme })
-        
-        // Apply theme to document root for CSS variables
-        if (typeof document !== 'undefined') {
-          document.documentElement.setAttribute('data-theme', theme)
-        }
-      },
-      
-      /**
-       * Toggle between light and dark theme
-       */
-      toggleTheme: () => {
-        const currentTheme = get().theme
-        const newTheme: Theme = currentTheme === 'light' ? 'dark' : 'light'
-        get().setTheme(newTheme)
-      },
+
       
       /**
        * Set sidebar open/closed state
@@ -206,7 +180,6 @@ export const useUIStore = create<UIStore>()(
        */
       resetPreferences: () => {
         set({
-          theme: DEFAULT_PREFERENCES.theme,
           notifications: DEFAULT_PREFERENCES.notifications,
           soundEffects: DEFAULT_PREFERENCES.soundEffects,
           autoSave: DEFAULT_PREFERENCES.autoSave,
@@ -217,7 +190,6 @@ export const useUIStore = create<UIStore>()(
     {
       name: STORAGE_KEYS.USER_PREFERENCES,
       partialize: (state) => ({
-        theme: state.theme,
         sidebarOpen: state.sidebarOpen,
         notifications: state.notifications,
         soundEffects: state.soundEffects,
@@ -227,9 +199,3 @@ export const useUIStore = create<UIStore>()(
     }
   )
 )
-
-// Initialize theme on store creation
-if (typeof document !== 'undefined') {
-  const store = useUIStore.getState()
-  document.documentElement.setAttribute('data-theme', store.theme)
-}

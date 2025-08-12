@@ -143,7 +143,6 @@ export const REGEX_PATTERNS = {
 
 // Default user preferences
 export const DEFAULT_PREFERENCES = {
-  theme: 'light' as const,
   language: 'id' as const,
   notifications: true,
   soundEffects: true,

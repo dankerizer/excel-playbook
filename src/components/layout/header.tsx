@@ -23,6 +23,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { useUIStore } from "@/store/use-ui-store"
 import { useProgressStore } from "@/store/use-progress-store"
+import { useTheme } from "@/hooks/use-theme"
 import { cn } from "@/lib/utils"
 import {
   BookOpenIcon,
@@ -42,7 +43,8 @@ import {
  */
 export function Header() {
   const pathname = usePathname()
-  const { theme, toggleTheme, toggleSidebar, isMobile } = useUIStore()
+  const { toggleSidebar, isMobile } = useUIStore()
+  const { theme, toggleTheme, mounted } = useTheme()
   const { points, streak, currentChapter } = useProgressStore()
 
   /**
@@ -147,8 +149,9 @@ export function Header() {
             size="icon"
             onClick={toggleTheme}
             className="h-9 w-9"
+            disabled={!mounted}
           >
-            {theme === 'light' ? (
+            {mounted && theme === 'dark' ? (
               <MoonIcon className="h-4 w-4" />
             ) : (
               <SunIcon className="h-4 w-4" />
