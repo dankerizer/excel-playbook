@@ -1,5 +1,5 @@
 import { MainLayout } from "@/components/layout/main-layout"
-import { LeaderboardWorkspace } from "@/components/features/leaderboard-workspace"
+import { LeaderboardWorkspace } from "@/components/features"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {

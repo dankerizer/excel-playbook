@@ -3,6 +3,7 @@
 import * as React from "react"
 import { Header } from "./header"
 import { Sidebar } from "./sidebar"
+import { Footer } from "./footer"
 import { useUIStore } from "@/store/use-ui-store"
 import { useResponsive } from "@/hooks/use-responsive"
 import { cn } from "@/lib/utils"
@@ -21,6 +22,11 @@ interface MainLayoutProps {
    */
   showHeader?: boolean
   /**
+   * Apakah layout ini untuk halaman yang membutuhkan footer
+   * Default: true
+   */
+  showFooter?: boolean
+  /**
    * Apakah konten membutuhkan padding
    * Default: true
    */
@@ -36,6 +42,7 @@ export function MainLayout({
   className,
   showSidebar = true,
   showHeader = true,
+  showFooter = true,
   padded = true,
 }: MainLayoutProps) {
   const { sidebarOpen, isMobile } = useUIStore()
@@ -44,11 +51,11 @@ export function MainLayout({
   useResponsive()
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
       {showHeader && <Header />}
       
-      <div className="flex  h-[calc(100vh-4rem)]">
+      <div className="flex flex-1">
         {/* Sidebar */}
         {showSidebar && <Sidebar />}
         
@@ -64,6 +71,9 @@ export function MainLayout({
           {children}
         </main>
       </div>
+      
+      {/* Footer */}
+      {showFooter && <Footer />}
     </div>
   )
 }
@@ -83,6 +93,7 @@ export function MarketingLayout({
     <MainLayout 
       showSidebar={false} 
       showHeader={true}
+      showFooter={true}
       padded={false}
       className={className}
     >
@@ -106,6 +117,7 @@ export function LearningLayout({
     <MainLayout 
       showSidebar={true} 
       showHeader={true}
+      showFooter={false}
       padded={false}
       className={cn("bg-muted/30", className)}
     >
@@ -129,6 +141,7 @@ export function PlaygroundLayout({
     <MainLayout 
       showSidebar={false} 
       showHeader={true}
+      showFooter={false}
       padded={false}
       className={cn("bg-background", className)}
     >

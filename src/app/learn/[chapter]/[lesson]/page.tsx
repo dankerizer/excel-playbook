@@ -14,8 +14,9 @@ interface LessonPageProps {
  * Generate metadata untuk halaman lesson
  */
 export async function generateMetadata({ params }: LessonPageProps): Promise<Metadata> {
-  const chapterNum = parseInt(params.chapter)
-  const lessonNum = parseInt(params.lesson)
+  const resolvedParams = await params
+  const chapterNum = parseInt(resolvedParams.chapter)
+  const lessonNum = parseInt(resolvedParams.lesson)
   
   return {
     title: `Chapter ${chapterNum} - Lesson ${lessonNum} - ExcelMaster`,
@@ -27,9 +28,10 @@ export async function generateMetadata({ params }: LessonPageProps): Promise<Met
  * Halaman pembelajaran individual untuk setiap lesson
  * Menampilkan konten lesson, simulator spreadsheet, dan navigasi
  */
-export default function LessonPage({ params }: LessonPageProps) {
-  const chapterNum = parseInt(params.chapter)
-  const lessonNum = parseInt(params.lesson)
+export default async function LessonPage({ params }: LessonPageProps) {
+  const resolvedParams = await params
+  const chapterNum = parseInt(resolvedParams.chapter)
+  const lessonNum = parseInt(resolvedParams.lesson)
   
   // Validasi parameter
   if (isNaN(chapterNum) || isNaN(lessonNum) || chapterNum < 1 || chapterNum > 10 || lessonNum < 1) {

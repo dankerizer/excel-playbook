@@ -19,6 +19,9 @@ import {
   ClockIcon,
   AwardIcon,
   TrendingUpIcon,
+  GraduationCapIcon,
+  FileTextIcon,
+  BookIcon,
 } from "lucide-react"
 
 /**
@@ -233,6 +236,27 @@ export function DashboardOverview() {
                 <Link href="/profile">
                   <AwardIcon className="mr-2 h-4 w-4" />
                   Kelola Profil
+                </Link>
+              </Button>
+              
+              <Button asChild variant="outline" className="w-full justify-start">
+                <Link href="/course">
+                  <BookIcon className="mr-2 h-4 w-4" />
+                  Jelajahi Course
+                </Link>
+              </Button>
+              
+              <Button asChild variant="outline" className="w-full justify-start">
+                <Link href="/artikel">
+                  <FileTextIcon className="mr-2 h-4 w-4" />
+                  Baca Artikel
+                </Link>
+              </Button>
+              
+              <Button asChild variant="outline" className="w-full justify-start">
+                <Link href="/certificate">
+                  <AwardIcon className="mr-2 h-4 w-4" />
+                  Lihat Sertifikat
                 </Link>
               </Button>
             </CardContent>

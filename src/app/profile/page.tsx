@@ -17,22 +17,19 @@ import {
   Calendar,
   Target,
   TrendingUp,
-  Award,
   Bell,
   Shield,
   Palette,
   Download,
   Upload,
-  Edit,
   Camera,
   Mail,
-  Phone,
   MapPin,
   Briefcase,
   GraduationCap
 } from "lucide-react"
-import { motion } from "framer-motion"
 import type { Metadata } from "next"
+import { ProfileAchievementCard } from "@/components/profile/profile-achievement-card"
 
 export const metadata: Metadata = {
   title: "Profil Saya - ExcelMaster",
@@ -566,31 +563,7 @@ export default function ProfilePage() {
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {mockUserAchievements.map((achievement, index) => (
-                    <motion.div
-                      key={achievement.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3, delay: index * 0.1 }}
-                      className="p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-                    >
-                      <div className="text-center mb-3">
-                        <div className="text-4xl mb-2">{achievement.icon}</div>
-                        <div className="flex items-center justify-center gap-2 mb-2">
-                          <h3 className="font-semibold text-gray-900 dark:text-white">
-                            {achievement.title}
-                          </h3>
-                          <Badge className={`text-xs ${getRarityColor(achievement.rarity)}`}>
-                            {achievement.rarity}
-                          </Badge>
-                        </div>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                          {achievement.description}
-                        </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-500">
-                          Diraih pada {formatDate(achievement.unlockedAt)}
-                        </p>
-                      </div>
-                    </motion.div>
+                    <ProfileAchievementCard key={`achievement-${achievement.id}-${achievement.title}`} achievement={achievement} index={index} />
                   ))}
                 </div>
               </CardContent>
