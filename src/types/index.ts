@@ -14,13 +14,30 @@ export interface User {
 
 export interface Progress {
   userId: string
+  selectedTrack?: string // current learning track
+  completedTracks: string[] // completed track IDs
   completedChapters: number[]
   currentChapter: number
   currentLesson: number
   points: number
   streak: number
   achievements: Achievement[]
+  certificates: Certificate[] // earned certificates
   lastUpdated: Date
+}
+
+export interface Certificate {
+  id: string
+  trackId: string
+  trackTitle: string
+  recipientName: string
+  issuedAt: Date
+  issuedDate: string // formatted date string
+  certificateNumber: string
+  completionPercentage: number
+  totalPoints: number
+  grade: 'A' | 'B' | 'C'
+  skills: string[] // skills acquired from the track
 }
 
 export interface Achievement {
@@ -32,12 +49,28 @@ export interface Achievement {
   points: number
 }
 
+// Learning Track Types
+export interface LearningTrack {
+  id: string
+  title: string
+  description: string
+  icon: string
+  level: 'dasar' | 'menengah' | 'perkantoran'
+  chapters: Chapter[]
+  estimatedTime: number // in minutes
+  totalLessons: number
+  certificateTemplate: string
+  prerequisites?: string[] // track IDs
+  skills: string[] // skills acquired from this track
+}
+
 // Learning Content Types
 export interface Chapter {
   id: number
   title: string
   description: string
   icon: string
+  trackId: string // reference to learning track
   lessons: Lesson[]
   estimatedTime: number // in minutes
   difficulty: 'beginner' | 'intermediate' | 'advanced'

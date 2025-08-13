@@ -1,20 +1,20 @@
 import { MainLayout } from "@/components/layout/main-layout"
-import { ChapterList } from "@/components/features/chapter-list"
+import { TrackSelectionPage } from "@/components/features/track-selection-page"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Belajar Excel - ExcelMaster",
-  description: "Pelajari Excel dari dasar hingga mahir dengan pembelajaran terstruktur dan hands-on practice.",
+  title: "Pilih Learning Track - ExcelMaster",
+  description: "Pilih jalur pembelajaran Excel yang sesuai dengan level dan kebutuhan Anda.",
 }
 
 /**
- * Halaman utama pembelajaran yang menampilkan daftar chapter
- * Pengguna dapat melihat progress dan memilih chapter untuk dipelajari
+ * Halaman utama pembelajaran yang menampilkan daftar learning track
+ * Pengguna dapat memilih track pembelajaran sesuai level mereka
  */
 export default function LearnPage() {
   return (
     <MainLayout>
-      <ChapterList />
+      <TrackSelectionPage />
     </MainLayout>
   )
 }

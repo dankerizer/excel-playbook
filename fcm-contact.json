@@ -1,0 +1,4 @@
+{
+  "data": "{\"_id\":\"689bf6e0c3ffc0e8cdb52746\",\"event\":\"incoming_message\",\"type\":\"whatsapp\",\"from\":\"6288219655850\",\"to\":\"628973014444\",\"body\":\"profil nip\",\"attachments\":[],\"status\":\"sent\",\"created_at\":\"2025-08-13T02:22:24.647817323Z\",\"updatedAt\":\"2025-08-13T02:22:24.647817393Z\",\"ppUrl\":\"https://pps.whatsapp.net/v/t61.24694-24/323069502_775795187252209_450330642410426238_n.jpg?ccb=11-4\\u0026oh=01_Q5Aa2QFwYerX6CNbAwGZO210Qc5SvSj5FCo7VTh1TenQL8kaJQ\\u0026oe=68A8E29E\\u0026_nc_sid=5e03e0\\u0026_nc_cat=107\",\"keyId\":\"C40980DDEEE94702610D0A0596769278\",\"source\":\"notifgo\"}",
+  "type": "message"
+}

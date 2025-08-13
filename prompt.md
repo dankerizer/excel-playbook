@@ -1,6 +1,3 @@
-Siap! Berikut **prompt siap-tempel** untuk menugaskan AI builder. Sudah menggabungkan seluruh kebutuhanmu (mirip Uxcel tapi materi Excel/Google Sheets), dengan stack FE: **Next.js 15 + TypeScript (strict) + TailwindCSS + shadcn/ui**, tone **Pengajar Santai**, bahasa **Indonesia**, dan fokus pengguna **pemula**.
-
----
 
 # PROMPT UNTUK AI BUILDER
 

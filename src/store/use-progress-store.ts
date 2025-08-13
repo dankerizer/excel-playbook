@@ -1,17 +1,21 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { Progress, Achievement } from '@/types'
+import type { Progress, Achievement, Certificate } from '@/types'
 import { STORAGE_KEYS, POINTS } from '@/lib/constants'
+import { calculateTrackProgress, isTrackCompleted } from '@/data/learning-tracks'
 
 interface ProgressState {
   // State
   userId: string | null
+  selectedTrack: string | null // current learning track
+  completedTracks: string[] // completed track IDs
   completedChapters: number[]
   currentChapter: number
   currentLesson: number
   points: number
   streak: number
   achievements: Achievement[]
+  certificates: Certificate[] // earned certificates
   lastUpdated: Date | null
   
   // Computed values
@@ -22,17 +26,22 @@ interface ProgressState {
 interface ProgressActions {
   // Actions
   initializeProgress: (userId: string) => void
+  selectTrack: (trackId: string) => void
+  completeTrack: (trackId: string) => void
   completeLesson: (chapterId: number, lessonId: number, earnedPoints?: number) => void
   completeChapter: (chapterId: number) => void
   updateStreak: () => void
   addAchievement: (achievement: Achievement) => void
+  addCertificate: (certificate: Certificate) => void
   resetProgress: () => void
   setCurrentChapter: (chapterId: number) => void
   setCurrentLesson: (lessonId: number) => void
   
   // Getters
+  isTrackCompleted: (trackId: string) => boolean
   isChapterCompleted: (chapterId: number) => boolean
   isLessonCompleted: (chapterId: number, lessonId: number) => boolean
+  getTrackProgress: (trackId: string) => number
   getChapterProgress: (chapterId: number) => number
 }
 
@@ -40,12 +49,15 @@ type ProgressStore = ProgressState & ProgressActions
 
 const initialState: ProgressState = {
   userId: null,
+  selectedTrack: null,
+  completedTracks: [],
   completedChapters: [],
   currentChapter: 1,
   currentLesson: 1,
   points: 0,
   streak: 0,
   achievements: [],
+  certificates: [],
   lastUpdated: null,
   totalChapters: 10, // Based on the 10 chapters mentioned in requirements
   completionPercentage: 0
@@ -67,6 +79,34 @@ export const useProgressStore = create<ProgressStore>()(
       initializeProgress: (userId: string) => {
         set({
           userId,
+          lastUpdated: new Date()
+        })
+      },
+      
+      /**
+       * Select a learning track for the user
+       * @param trackId - Learning track ID to select
+       */
+      selectTrack: (trackId: string) => {
+        set({
+          selectedTrack: trackId,
+          lastUpdated: new Date()
+        })
+      },
+      
+      /**
+       * Mark a learning track as completed
+       * @param trackId - Learning track ID to complete
+       */
+      completeTrack: (trackId: string) => {
+        const state = get()
+        
+        if (state.completedTracks.includes(trackId)) {
+          return
+        }
+        
+        set({
+          completedTracks: [...state.completedTracks, trackId],
           lastUpdated: new Date()
         })
       },
@@ -145,7 +185,7 @@ export const useProgressStore = create<ProgressStore>()(
       },
       
       /**
-       * Add a new achievement
+       * Add an achievement to user's profile
        * @param achievement - Achievement to add
        */
       addAchievement: (achievement: Achievement) => {
@@ -159,6 +199,24 @@ export const useProgressStore = create<ProgressStore>()(
         set({
           achievements: [...state.achievements, achievement],
           points: state.points + achievement.points,
+          lastUpdated: new Date()
+        })
+      },
+      
+      /**
+       * Add a certificate to user's profile
+       * @param certificate - Certificate to add
+       */
+      addCertificate: (certificate: Certificate) => {
+        const state = get()
+        
+        // Check if certificate already exists
+        if (state.certificates.some((c: Certificate) => c.id === certificate.id)) {
+          return
+        }
+        
+        set({
+          certificates: [...state.certificates, certificate],
           lastUpdated: new Date()
         })
       },
@@ -211,6 +269,26 @@ export const useProgressStore = create<ProgressStore>()(
       },
       
       /**
+       * Check if a learning track is completed
+       * @param trackId - Learning track ID to check
+       * @returns True if track is completed
+       */
+      isTrackCompleted: (trackId: string) => {
+        const state = get()
+        return isTrackCompleted(trackId, state.completedChapters)
+      },
+      
+      /**
+       * Get progress percentage for a learning track
+       * @param trackId - Learning track ID
+       * @returns Progress percentage (0-100)
+       */
+      getTrackProgress: (trackId: string) => {
+        const state = get()
+        return calculateTrackProgress(trackId, state.completedChapters)
+      },
+      
+      /**
        * Get progress percentage for a specific chapter
        * @param chapterId - Chapter ID
        * @returns Progress percentage (0-100)
@@ -235,12 +313,15 @@ export const useProgressStore = create<ProgressStore>()(
       name: STORAGE_KEYS.USER_PROGRESS,
       partialize: (state) => ({
         userId: state.userId,
+        selectedTrack: state.selectedTrack,
+        completedTracks: state.completedTracks,
         completedChapters: state.completedChapters,
         currentChapter: state.currentChapter,
         currentLesson: state.currentLesson,
         points: state.points,
         streak: state.streak,
         achievements: state.achievements,
+        certificates: state.certificates,
         lastUpdated: state.lastUpdated
       })
     }
